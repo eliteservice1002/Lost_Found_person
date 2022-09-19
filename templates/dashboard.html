@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -45,7 +46,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: sans-serif}
 <nav class="w3-sidebar w3-collapse w3-white" style="z-index:3;width:250px;" id="mySidebar"><br>
   <div class="w3-container w3-row">
     <div class="w3-col s4">
-      <img src="static/img/img_avatar.png" class="w3-circle w3-margin-right" style="width:46px">
+      <img src="{% static '/img/img_avatar.png' %}" class="w3-circle w3-margin-right" style="width:46px">
     </div>
     <div class="w3-col s8 w3-bar">
       <div class="w3-row">
