@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>{{title}}</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<link href="static/css/toast.min.css" rel="stylesheet">
+<link href="static/css/bootstrap.min.css" rel="stylesheet">
+
+<script src="static/js/jquery.min.js"></script>
+<script src="static/js/bootstrap.min.js"></script>
+<script src="static/js/toast.min.js"></script>
+
+<style>
+html,body,h1,h2,h3,h4,h5 {font-family: sans-serif}
+hr#body:not(:last-child) {
+  border: 1px solid red;
+}
+</style>
+</head>
+<body class="w3-light-grey">
+
+
+
+<!-- Sidebar/menu    w3-animate-left     -->
+<nav class="w3-sidebar w3-collapse w3-white" style="z-index:3;width:250px;" id="mySidebar"><br>
+  <div class="w3-container w3-row">
+    <div class="w3-col s4">
+      <img src="static/img/img_avatar.png" class="w3-circle w3-margin-right" style="width:46px">
+    </div>
+    {% if role== "user" %}
+    <div class="w3-col s8 w3-bar">
+      <div class="w3-row">
+        <span>Welcome, 
+          <strong>
+              {{name}}
+          </strong>
+        </span>
+      </div>
+      <br>
+
+    <div class="w3-row w3-dropdown-hover w3-left">
+      <div class="w3-col s9">
+        <a id="district_police" class="" style="background: none;">
+          {{police_station}}, {{district_city}}
+        </a>
+    {% elif role=="admin" %}
+    <div class="w3-col s8 w3-bar"  style="margin-top:13px">
+      <div class="w3-row w3-dropdown-hover w3-left" style="background: none;">
+        <div class="w3-col s9">
+          <a><span><strong>Admin</strong></span></a>
+          <a id="district_police" class="" style="background: none; display: none;">
+            {{police_station}}, {{district_city}}
+          </a>
+    {% endif %}
+          <input class="w3-input w3-border" id="name" name="name" type="hidden" value="{{name}}" />
+          <input class="w3-input w3-border" id="role" name="role" type="hidden" value="{{role}}" />
+          <a style="display: none;" id="police_station" class="w3-bar-item w3-button"><i class="fa fa-institution"></i>{{police_station}}</a>
+          <a style="display: none;" id="district_city" class="w3-bar-item w3-button"><i class="fa fa-home"></i>{{district_city}}</a>
+          <div class="w3-dropdown-content w3-bar-block w3-border" style="box-shadow: rgb(15, 14, 20) 0px 10px 20px;">
+            <a id="changepwd" onclick="document.getElementById('changepwdmodal').style.display='block'" class="w3-bar-item w3-button">Change Password</a>
+
+
+            <div id="changepwdmodal" class="w3-modal">
+              <div class="w3-modal-content w3-animate-top w3-card-4">
+                <header class="w3-container w3-blue" style="padding-top: 15px;"> 
+                  <span onclick="document.getElementById('changepwdmodal').style.display='none'" 
+                  class="w3-button w3-display-topright">&times;</span>
+                  <h2>Change Password</h2>
+                </header>
+                <div class="w3-container">
+                  <div class="w3-section">
+                    <input class="w3-input w3-border w3-margin-bottom" type="password" name="newpassword" id="newpassword" placeholder="New Password"/>
+                    <input class="w3-input w3-border w3-margin-bottom" type="password" name="confirmpassword" id="confirmpassword" placeholder="Confirm New Password"/>
+                    <button id="changepwdbtn" class="w3-button w3-block w3-section w3-blue w3-ripple w3-padding">Change</button>
+                    
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <a id="logout" class="w3-bar-item w3-button">Log Out</a>  
+
+          </div>
+        </div>
+
+        <div class="w3-col s3">
+          {% if role == "admin" %}
+            <img src="https://www.svgrepo.com/show/99290/arrow-down-sign-to-navigate.svg" intrinsicsize="512 x 512" width="13" height="13" srcset="https://www.svgrepo.com/show/99290/arrow-down-sign-to-navigate.svg 4x" alt="Arrow Down Sign To Navigate SVG Vector" title="Arrow Down Sign To Navigate SVG Vector" data-xblocker="passed" style="visibility: visible; margin-left:5px;">
+          {% elif role == "user" %}
+            <img src="https://www.svgrepo.com/show/99290/arrow-down-sign-to-navigate.svg" intrinsicsize="512 x 512" width="13" height="13" srcset="https://www.svgrepo.com/show/99290/arrow-down-sign-to-navigate.svg 4x" alt="Arrow Down Sign To Navigate SVG Vector" title="Arrow Down Sign To Navigate SVG Vector" data-xblocker="passed" style="visibility: visible; margin-top:15px;">
+          {% endif %}
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+  <hr>
+  <!-- <div class="w3-container">
+    <h5>Dashboard</h5>
+  </div> -->
+  <div class="w3-bar-block">
+    <a href="#" class="w3-bar-item w3-button w3-padding-16 w3-hide-large w3-dark-grey w3-hover-black" onclick="w3_close()" title="close menu"><i class="fa fa-remove fa-fw"></i>  Close Menu</a>
+    <a id="dashboard" class="w3-bar-item w3-button w3-padding"><i class="fa fa-diamond fa-fw"></i>  Dashboard</a>
+    {% if role== "admin" %}
+    <a id="users" class="w3-bar-item w3-button w3-padding"><i class="fa fa-user fa-fw"></i>  Users</a>
+    {% endif %}
+    <a id="matchedphotos" class="w3-bar-item w3-button w3-padding"><i class="fa fa-eye fa-fw"></i>  Matched Photos</a>
+    <a id="unmatchedphotos" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bullseye fa-fw"></i>  Unmatched Photos</a>
+    <a id="allphotos" class="w3-bar-item w3-button w3-padding w3-blue"><i class="fa fa-users fa-fw"></i>  All Photos Uploaded</a>
+</div>
+</nav>
+
+
+<!-- Overlay effect when opening sidebar on small screens -->
+<div class="w3-overlay w3-hide-large w3-animate-opacity" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
+
+<!-- !PAGE CONTENT! -->
+<div class="w3-main" style="margin-left:250px;">
+
+  <!-- Header -->
+  <header class="w3-container" style="padding-top:22px">
+    <h5><b><i class="fa fa-dashboard"></i> All Photos Uploaded</b></h5>
+  </header>
+
+   
+    <div class="w3-content">
+
+      {% for person in persons %}
+
+        <div class="item w3-row w3-margin">
+          <div class="w3-col" style="width: 30%">
+            <div class="w3-row">
+              <h3 class="upload_date">{{ per_page*(page-1) + loop.index }}. {{person.upload_date.strftime('%d/%m/%Y')}}</h3>
+            </div>
+              <input type="hidden" value="{{person.upload_date}}"/>
+            <div class="w3-row">
+              {% if person.lost_found == 0 %}
+              <h5 class="lost_found">Lost</h5>
+              {% elif person.lost_found == 1 %}
+              <h5 class="lost_found">Found</h5>
+              {% endif %}
+            </div>
+            <div class="w3-row">
+              <img src="static/photos/{{ person.name_person }}.jpg" style="width:100%; min-height:200px">
+            </div>
+            <div class="w3-row">
+              <p class="police_station">Police Station: {{ person.police_station }}, {{ person.district_city }}</p>
+            </div>
+          </div>
+
+          <div class="w3-col w3-container" style="width: 60%">
+            <ul style="line-height: 3;">
+              <li>
+                {% if person.lost_found == 0 %}
+                  Name of lost person:
+                {% elif person.lost_found == 1 %}
+                  Name of found person:
+                {% endif %}
+                {{ person.name_person }}
+              </li>
+              <!-- <li>                
+                {% if person.lost_found == 0 %}
+                  Name of the contact person of the lost person:
+                {% elif person.lost_found == 1 %}
+                  Name of the contact person of the found person:
+                {% endif %}
+                {{ person.name_contactperson }}
+              </li> -->
+              <li>Contact person phone no: {{ person.number_contactperson }}</li>
+              <li>GD/case no: {{ person.GD_case_no }}</li>
+              <li>GD/case date: {{ person.GD_case_date }}</li>
+              <li>Investigation officer phone no: {{ person.enrollment_officer_phonenumber }}</li>
+              <li>Remarks: {{ person.remarks }}</li>
+            </ul>
+          </div>
+
+          <div class="w3-col" style="width: 10%">
+            {% if role== "admin" %}
+              <button type="button" class="deleteBtn btn btn-danger">Delete</button>
+            {% endif %}
+          </div>
+        </div>
+
+        <hr id="body"/>
+          
+      {% endfor %}
+      
+      <div class="pagination w3-right w3-container">
+        {{ pagination.links }}
+      </div>
+
+
+
+      </div>
+
+
+
+</div>
+
+<script>
+  var deleteBtn = $(".deleteBtn").click(function(e) {
+    let upload_date = $(this).parents("div.item.w3-row.w3-margin").children().children()[1].value
+    let lost_found = $(this).parents("div.item.w3-row.w3-margin").children().children()[2].innerText
+    let police_station = $(this).parents("div.item.w3-row.w3-margin").children().children()[4].innerText.split(": ")[1].split(", ")[0]
+    if(upload_date===""||lost_found===""||police_station==="") {
+      $.toast({
+        title: 'Error',
+        content: 'Can not delete!',
+        type: 'error',
+        delay: 3000
+      });
+    }
+    else {
+      let data = {
+        upload_date: upload_date,
+        lost_found: lost_found,
+        police_station: police_station,
+      }
+      $.ajax({
+        url: 'http://104.248.93.153/allphotos',
+        type: 'PUT',
+        data: data,
+        success: function(response) {
+          $(e.target).parents("div.item.w3-row.w3-margin")[0].hidden = true
+          $(e.target).parents("div.item.w3-row.w3-margin").next()[0].hidden = true
+          $.toast({
+            title: 'Success',
+            content: 'Deleted successfully!',
+            type: 'success',
+            delay: 3000
+          });
+        },
+        error: function(res,msg,error){
+          if( res.responseText === "wrongpwd" ) {
+            $.toast({
+              title: 'Error',
+              content: 'Can not delete!',
+              type: 'error',
+              delay: 3000
+            });
+          }
+        }
+     });
+    }
+  })
+
+  var changepwdbtn = document.getElementById("changepwdbtn")
+  changepwdbtn.addEventListener("click", function() { 
+    newpassword = $("#newpassword").val()
+    confirmpassword = $("#confirmpassword").val()
+    if( newpassword === confirmpassword ) {
+      var data = {
+        name: $("#name").val(),
+        newpassword: newpassword,
+      }
+      $.ajax({
+        url: 'http://104.248.93.153/changepwd',
+        type: 'PUT',
+        data: data,
+        success: function(response) {
+          localStorage.password = $("#confirmpassword").val()
+          $("#newpassword").val("")
+          $("#confirmpassword").val("")
+          $.toast({
+            title: 'Success',
+            content: 'Password has been changed successfully!',
+            type: 'success',
+            delay: 3000
+          });
+        },
+        error: function(res,msg,error){
+          if( res.responseText === "wrongpwd" ) {
+            $.toast({
+              title: 'Error',
+              content: 'Your current password is not correct!',
+              type: 'error',
+              delay: 3000
+            });
+          }
+        }
+     });
+    }
+    else {
+      $.toast({
+        title: 'Error',
+        content: 'The passwords you typed do not match. Please retype the new password in both boxes!',
+        type: 'error',
+        delay: 3000
+      });
+    }
+
+  })
+
+  $("#logout").click(function() {
+    let name = $('#name').val();
+    console.log(window.location.href)
+    data = {
+      name: name, 
+      url: window.location.href,
+    }
+    $.ajax({
+      url: 'http://104.248.93.153/logout',
+      type: 'POST',
+      data: data,
+      success: function(response) {
+        if(response === 'logoutsuccess') {
+          localStorage.clear()
+          window.location.assign("http://104.248.93.153")
+        }
+      },
+    })
+  })
+
+  window.onbeforeunload = function (e) {
+    // Your logic to prepare for 'Stay on this Page' goes here 
+    let name = $('#name').val();
+    data = {
+      name: name, 
+      url: window.location.href,
+    }
+    $.ajax({
+      url: 'http://104.248.93.153/logout',
+      type: 'PUT',
+      data: data,
+      success: function(response) {
+        if(response === 'exitsuccess') {
+        }
+      },
+    })
+  };
+
+  var dashboard = document.getElementById('dashboard');
+  dashboard.addEventListener('click', function(){
+    let name = $("#name").val()
+    let police_station = document.getElementById('police_station').innerText;
+    let district_city = document.getElementById('district_city').innerText;
+    let role = $('#role').val();
+    window.location.assign("http://104.248.93.153/dashboard?name="+name+"&police_station="+police_station+
+            "&district_city="+district_city+"&role="+role)
+  })
+  
+  var matchedphotos = document.getElementById('matchedphotos');
+  matchedphotos.addEventListener('click', function(){
+    let name = $("#name").val();
+    let police_station = document.getElementById('police_station').innerText;
+    let district_city = document.getElementById('district_city').innerText;
+    let role = $('#role').val();
+    window.location.assign("http://104.248.93.153/matchedphotos?name="+name+"&police_station="+police_station+
+            "&district_city="+district_city+"&role="+role)
+  })
+  
+  var unmatchedphotos = document.getElementById('unmatchedphotos');
+  unmatchedphotos.addEventListener('click', function(){
+    let name = $("#name").val();
+    let police_station = document.getElementById('police_station').innerText;
+    let district_city = document.getElementById('district_city').innerText;
+    let role = $('#role').val();
+    window.location.assign("http://104.248.93.153/unmatchedphotos?name="+name+"&police_station="+police_station+
+            "&district_city="+district_city+"&role="+role)
+  })
+
+  var allphotos = document.getElementById('allphotos');
+  allphotos.addEventListener('click', function(){
+    let name = $("#name").val();
+    let police_station = document.getElementById('police_station').innerText;
+    let district_city = document.getElementById('district_city').innerText;
+    let role = $('#role').val();
+    window.location.assign("http://104.248.93.153/allphotos?page=1&name="+name+"&police_station="+police_station+
+            "&district_city="+district_city+"&role="+role)
+  })
+
+  if($('#role').val() === "admin") {
+    var user = document.getElementById('users');
+    user.addEventListener('click', function(){
+      let name = $("#name").val();
+      let police_station = document.getElementById('police_station').innerText;
+      let district_city = document.getElementById('district_city').innerText;
+      let role = $('#role').val();
+      window.location.assign("http://104.248.93.153/myusers?page=1&name="+name+"&police_station="+police_station+
+              "&district_city="+district_city+"&role="+role)
+    })
+  }
+  
+// Get the Sidebar
+var mySidebar = document.getElementById("mySidebar");
+
+// Get the DIV with overlay effect
+var overlayBg = document.getElementById("myOverlay");
+
+// Toggle between showing and hiding the sidebar, and add overlay effect
+function w3_open() {
+  if (mySidebar.style.display === 'block') {
+    mySidebar.style.display = 'none';
+    overlayBg.style.display = "none";
+  } else {
+    mySidebar.style.display = 'block';
+    overlayBg.style.display = "block";
+  }
+}
+
+// Close the sidebar with the close button
+function w3_close() {
+  mySidebar.style.display = "none";
+  overlayBg.style.display = "none";
+}
+</script>
+
+</body>
+</html>
